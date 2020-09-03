@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Ship from './Ship';
+import NotShip from './NotShip'
 import { randomNumBetweenExcluding } from './helpers'
 import newPlayer from './newPlayer'
 //import updatePlayers from './updatePlayers'
@@ -47,7 +48,7 @@ export class Reacteroids extends Component {
         //this.asteroids = [];
         //this.bullets = [];
         this.particles = [];
-        this.otherShip = [];
+        this.notship = [];
     }
     
     handleResize(value, e){
@@ -96,7 +97,7 @@ export class Reacteroids extends Component {
               const data = playersData[index]
               if(otherPlayers[index] === undefined && index !== socket.id){
                   //create new ship if it isn't already created
-                  let othership = new Ship({
+                  let othership = new NotShip({
                       position: {
                         x: data.x,
                         y: data.y
@@ -104,7 +105,7 @@ export class Reacteroids extends Component {
                       create: this.createObject.bind(this),
                       onDie: this.gameOver.bind(this)
                     });
-                    this.createObject(othership, 'ship');
+                    this.createObject(othership, 'notship');
                     otherPlayers[index] = othership
               }
               playersFound[index] = true
@@ -136,6 +137,7 @@ export class Reacteroids extends Component {
         const context = this.state.context;
         const keys = this.state.keys;
         const ship = this.ship[0];
+        const notship = this.notship
         if((ship.velocity.x > 0.1 || ship.velocity.x < -0.1) || (ship.velocity.y > 0.1 || ship.velocity.y < -0.1)){
         this.emitPlayerData()
         }
@@ -166,6 +168,7 @@ export class Reacteroids extends Component {
         // this.updateObjects(this.asteroids, 'asteroids')
         // this.updateObjects(this.bullets, 'bullets')
         this.updateObjects(this.ship, 'ship')
+        this.updateObjects(this.notship, 'notship')
     
         context.restore();
     
