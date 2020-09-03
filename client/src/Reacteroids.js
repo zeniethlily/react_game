@@ -10,7 +10,7 @@ import playerMovement from './playerMovement'
 import openSocket from 'socket.io-client'
 
 
-const socket = openSocket('http://localhost:8000')
+const socket = openSocket('https://pure-oasis-79953.herokuapp.com/')
 let otherPlayers = {}
 
 const KEY = {
