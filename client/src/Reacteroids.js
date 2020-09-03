@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import Ship from './Ship';
 import NotShip from './NotShip'
+import Asteroid from './Asteroid'
 import { randomNumBetweenExcluding } from './helpers'
 import newPlayer from './newPlayer'
-//import updatePlayers from './updatePlayers'
+
 import playerMovement from './playerMovement'
 import openSocket from 'socket.io-client'
 
@@ -215,6 +216,23 @@ export class Reacteroids extends Component {
           topScore: this.state.currentScore,
         });
         localStorage['topscore'] = this.state.currentScore;
+      }
+    }
+
+    generateAsteroids(howMany){
+      let asteroids = [];
+      let ship = this.ship[0];
+      for (let i = 0; i < howMany; i++) {
+        let asteroid = new Asteroid({
+          size: 80,
+          position: {
+            x: randomNumBetweenExcluding(0, this.state.screen.width, ship.position.x-60, ship.position.x+60),
+            y: randomNumBetweenExcluding(0, this.state.screen.height, ship.position.y-60, ship.position.y+60)
+          },
+          create: this.createObject.bind(this),
+          addScore: this.addScore.bind(this)
+        });
+        this.createObject(asteroid, 'asteroids');
       }
     }
 
