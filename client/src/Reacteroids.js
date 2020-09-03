@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Ship from './Ship';
 import NotShip from './NotShip'
 import Asteroid from './Asteroid'
+import Bullet from './Bullet'
 import { randomNumBetweenExcluding } from './helpers'
 import newPlayer from './newPlayer'
 
@@ -46,8 +47,8 @@ export class Reacteroids extends Component {
           inGame: false
         }
         this.ship = [];
-        //this.asteroids = [];
-        //this.bullets = [];
+        this.asteroids = [];
+        this.bullets = [];
         this.particles = [];
         this.notship = [];
     }
@@ -139,8 +140,11 @@ export class Reacteroids extends Component {
         const keys = this.state.keys;
         const ship = this.ship[0];
         const notship = this.notship
-        if((ship.velocity.x > 0.1 || ship.velocity.x < -0.1) || (ship.velocity.y > 0.1 || ship.velocity.y < -0.1)){
-        this.emitPlayerData()
+
+        if(ship){
+          if((ship.velocity.x > 0.1 || ship.velocity.x < -0.1) || (ship.velocity.y > 0.1 || ship.velocity.y < -0.1)){
+            this.emitPlayerData()
+          }
         }
         playerMovement(otherPlayers)
 
@@ -154,20 +158,20 @@ export class Reacteroids extends Component {
         context.globalAlpha = 1;
     
         // Next set of asteroids
-        // if(!this.asteroids.length){
-        //   let count = this.state.asteroidCount + 1;
-        //   this.setState({ asteroidCount: count });
-        //   this.generateAsteroids(count)
-        // }
+        if(!this.asteroids.length){
+          let count = this.state.asteroidCount + 1;
+          this.setState({ asteroidCount: count });
+          this.generateAsteroids(count)
+        }
     
         // Check for colisions
-        // this.checkCollisionsWith(this.bullets, this.asteroids);
-        // this.checkCollisionsWith(this.ship, this.asteroids);
+        this.checkCollisionsWith(this.bullets, this.asteroids);
+        this.checkCollisionsWith(this.ship, this.asteroids);
     
         // Remove or render
         this.updateObjects(this.particles, 'particles')
-        // this.updateObjects(this.asteroids, 'asteroids')
-        // this.updateObjects(this.bullets, 'bullets')
+        this.updateObjects(this.asteroids, 'asteroids')
+        this.updateObjects(this.bullets, 'bullets')
         this.updateObjects(this.ship, 'ship')
         this.updateObjects(this.notship, 'notship')
     
@@ -201,8 +205,8 @@ export class Reacteroids extends Component {
         
     
         // Make asteroids
-        //this.asteroids = [];
-        //this.generateAsteroids(this.state.asteroidCount)
+        this.asteroids = [];
+        this.generateAsteroids(this.state.asteroidCount)
     }
       
     gameOver(){
@@ -230,7 +234,7 @@ export class Reacteroids extends Component {
             y: randomNumBetweenExcluding(0, this.state.screen.height, ship.position.y-60, ship.position.y+60)
           },
           create: this.createObject.bind(this),
-          addScore: this.addScore.bind(this)
+          //addScore: this.addScore.bind(this)
         });
         this.createObject(asteroid, 'asteroids');
       }

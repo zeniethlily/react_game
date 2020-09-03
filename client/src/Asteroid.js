@@ -19,7 +19,7 @@ export default class Asteroid {
 
   destroy(){
     this.delete = true;
-    this.addScore(this.score);
+    //this.addScore(this.score);
 
     // Explode
     for (let i = 0; i < this.radius; i++) {
@@ -49,7 +49,7 @@ export default class Asteroid {
             y: randomNumBetween(-10, 20)+this.position.y
           },
           create: this.create.bind(this),
-          addScore: this.addScore.bind(this)
+          //addScore: this.addScore.bind(this)
         });
         this.create(asteroid, 'asteroids');
       }
